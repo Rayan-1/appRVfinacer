@@ -6,15 +6,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #fff;
-            color: #fff;
+            background-color: #f8f9fa;
+            color: #0f0f0f;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         #app-container {
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
 
         .btn {
@@ -23,6 +29,7 @@
 
         #balance {
             font-size: 1.5em;
+            color: #007bff;
         }
 
         .form-group {
@@ -30,9 +37,22 @@
         }
 
         a {
-            color: #28a745;
+            color: rgb(53, 40, 167);
         }
-        
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px 0;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
     </style>
     <title>Gerenciamento Financeiro Pessoal</title>
 </head>
@@ -68,6 +88,9 @@
             <h5>Lista de Transações</h5>
             <ul id="transactionList"></ul>
         </div>
+        <!-- Adicione este botão abaixo do formulário de adição de transação -->
+    <button type="button" class="btn btn-info" onclick="showTransactionList()">Ver Lista de Transações</button>
+
     </div>
     <script src="script.js"></script>
 </body>
