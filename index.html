@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fff;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #app-container {
+            padding: 20px;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        #balance {
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #28a745;
+        }
+        
+    </style>
+    <title>Gerenciamento Financeiro Pessoal</title>
+</head>
+<body>
+    <div id="app-container">
+        <h1 class="text-center mb-4">Gerenciamento Financeiro Pessoal</h1>
+        <div>
+            <button type="button" class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+        <div class="mt-4">
+            <h5>Saldo</h5>
+            <p id="balance">Saldo: R$0.00</p>
+        </div>
+        <div class="mt-4">
+            <h5>Adicionar Transação</h5>
+            <form>
+                <div class="form-group">
+                    <label for="transaction">Descrição:</label>
+                    <input type="text" class="form-control" id="transaction" placeholder="Descrição">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Valor:</label>
+                    <input type="number" class="form-control" id="amount" placeholder="Valor">
+                </div>
+                <div class="form-group">
+                    <label for="category">Categoria:</label>
+                    <input type="text" class="form-control" id="category" placeholder="Categoria">
+                </div>
+                <button type="button" class="btn btn-success" onclick="addTransaction()">Adicionar Transação</button>
+            </form>
+        </div>
+        <div class="mt-4">
+            <h5>Lista de Transações</h5>
+            <ul id="transactionList"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
