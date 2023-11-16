@@ -64,13 +64,12 @@ function login() {
     if (user) {
         currentUser = user;
         saveData();
-        
+
         // Redirecionar para a página de transações
-        showTransactionPage();
+        window.location.href = 'index.html';
     } else {
         alert('Usuário ou senha incorretos. Tente novamente.');
     }
-    showTransactionPage();
 }
 
 function showTransactionPage() {
@@ -81,11 +80,124 @@ function showTransactionPage() {
     fetch('./index.html')
         .then(response => response.text())
         .then(html => {
-            // Inserir o conteúdo no app-container
-            document.getElementById('app-container').innerHTML = html;
+            // Inserir o conteúdo no corpo do documento
+            document.body.innerHTML = html;
         })
         .catch(error => console.error('Erro ao carregar a página:', error));
 }
+
+    function addTransaction() {
+        const transactionDescription = document.getElementById('transaction').value;
+        const transactionAmount = parseFloat(document.getElementById('amount').value);
+        const transactionCategory = document.getElementById('category').value;
+    
+        if (transactionDescription.trim() === '' || isNaN(transactionAmount) || transactionCategory.trim() === '') {
+            alert('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+    
+        // Obtém a data atual
+        const currentDate = new Date();
+    
+        // Formata a data como "YYYY-MM-DD"
+        const formattedDate = currentDate.toISOString().split('T')[0];
+    
+        const transaction = {
+            id: new Date().getTime(),
+            description: transactionDescription,
+            amount: transactionAmount,
+            category: transactionCategory,
+            date: currentDate  // Usa a data diretamente
+        };
+    
+        transactions.push(transaction);
+        currentUser.transactions.push(transaction);
+        updateBalance();
+        displayTransaction(transaction);
+    
+        // Limpa os campos de entrada
+        document.getElementById('transaction').value = '';
+        document.getElementById('amount').value = '';
+        document.getElementById('category').value = '';
+    }
+
+    function addTransactionFromForm() {
+        const transactionDescription = document.getElementById('transaction').value;
+        const transactionAmount = parseFloat(document.getElementById('amount').value);
+        const transactionCategory = document.getElementById('category').value;
+    
+        if (transactionDescription.trim() === '' || isNaN(transactionAmount) || transactionCategory.trim() === '') {
+            alert('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+    
+        // Obtém a data atual
+        const currentDate = new Date();
+    
+        // Formata a data como "YYYY-MM-DD"
+        const formattedDate = currentDate.toISOString().split('T')[0];
+    
+        const transaction = {
+            id: new Date().getTime(),
+            description: transactionDescription,
+            amount: transactionAmount,
+            category: transactionCategory,
+            date: currentDate  // Usa a data diretamente
+        };
+    
+        transactions.push(transaction);
+        currentUser.transactions.push(transaction);
+        updateBalance();
+        displayTransaction(transaction);
+    
+        // Limpa os campos de entrada
+        document.getElementById('transaction').value = '';
+        document.getElementById('amount').value = '';
+        document.getElementById('category').value = '';
+    }
+    
+    
+    function displayTransaction(transaction) {
+        const transactionList = document.getElementById('transactionList');
+        const li = document.createElement('li');
+        li.classList.add('list-group-item');
+        li.innerHTML = `
+            ${transaction.description}: R$${transaction.amount.toFixed(2)} 
+            <span class="badge badge-warning" style="cursor: pointer;" onclick="editTransaction(${transaction.id})">Editar</span>
+            <span class="badge badge-danger" style="cursor: pointer;" onclick="removeTransaction(${transaction.id})">Remover</span>
+            <br>
+            <small>Categoria: ${transaction.category}</small>
+            <br>
+            <small>Data: ${transaction.date}</small>
+        `;
+        transactionList.appendChild(li);
+    }
+    
+
+
+    function showTransactionPage() {
+        updateBalance();
+        displayTransactions();
+    
+        // Fetch para carregar o conteúdo de outro arquivo HTML
+        fetch('./index.html')
+            .then(response => response.text())
+            .then(html => {
+                // Inserir o conteúdo no app-container
+                document.getElementById('app-container').innerHTML = html;
+    
+                // Redirecionar para o index.html
+                window.location.href = 'index.html';
+            })
+            .catch(error => console.error('Erro ao carregar a página:', error));
+    }
+    
+    function showTransactionList() {
+        updateBalance();
+        displayTransactions();
+    }
+    
+    
 
 
 
@@ -103,6 +215,8 @@ function updateBalance() {
     balanceElement.innerText = `Saldo: R$${totalBalance.toFixed(2)}`;
 }
 
+
+
 function addTransaction() {
     const transactionDescription = document.getElementById('transaction').value;
     const transactionAmount = parseFloat(document.getElementById('amount').value);
@@ -113,17 +227,27 @@ function addTransaction() {
         return;
     }
 
+    // Obtém a data atual
+    const currentDate = new Date();
+
+    // Formata a data como "YYYY-MM-DD"
+    const formattedDate = currentDate.toISOString().split('T')[0];
+
     const transaction = {
         id: new Date().getTime(),
         description: transactionDescription,
         amount: transactionAmount,
-        category: transactionCategory
+        category: transactionCategory,
+        date: formattedDate
     };
 
     transactions.push(transaction);
     currentUser.transactions.push(transaction);
     updateBalance();
     displayTransaction(transaction);
+
+    // Salva os dados no armazenamento local
+    saveData();
 
     // Limpa os campos de entrada
     document.getElementById('transaction').value = '';
