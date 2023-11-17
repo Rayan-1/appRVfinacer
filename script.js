@@ -20,29 +20,30 @@ loadData();
 function showSignupForm() {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('signup-container').style.display = 'block';
+    document.getElementById('successMessage').style.display = 'none'; // Ocultar a mensagem de sucesso
 }
+
 
 function showLoginForm() {
     document.getElementById('login-container').style.display = 'block';
     document.getElementById('signup-container').style.display = 'none';
 }
-
 function createAccount() {
-    const newUsername = document.getElementById('newUsername').value;
+    const newEmail = document.getElementById('newEmail').value;
     const newPassword = document.getElementById('newPassword').value;
 
-    if (newUsername.trim() === '' || newPassword.trim() === '') {
+    if (newEmail.trim() === '' || newPassword.trim() === '') {
         alert('Por favor, preencha todos os campos corretamente.');
         return;
     }
 
-    if (accounts.some(account => account.username === newUsername)) {
-        alert('Este nome de usuário já está em uso. Escolha outro.');
+    if (accounts.some(account => account.email === newEmail)) {
+        alert('Este endereço de e-mail já está em uso. Escolha outro.');
         return;
     }
 
     const newAccount = {
-        username: newUsername,
+        email: newEmail,
         password: newPassword,
         transactions: []
     };
@@ -50,16 +51,21 @@ function createAccount() {
     accounts.push(newAccount);
     currentUser = newAccount;
     saveData();
-    
+
+    // Ocultar o formulário de cadastro e mostrar a mensagem de sucesso
+    document.getElementById('signup-container').style.display = 'none';
+    document.getElementById('successMessage').style.display = 'block';
+
     // Redirecionar para a página de transações
     showTransactionPage();
 }
 
+
 function login() {
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value; // Alterado para novo campo de email
     const password = document.getElementById('password').value;
 
-    const user = accounts.find(account => account.username === username && account.password === password);
+    const user = accounts.find(account => account.email === email && account.password === password); // Alterado para verificar o email
 
     if (user) {
         currentUser = user;
@@ -68,10 +74,9 @@ function login() {
         // Redirecionar para a página de transações
         window.location.href = 'index.html';
     } else {
-        alert('Usuário ou senha incorretos. Tente novamente.');
+        alert('E-mail ou senha incorretos. Tente novamente.');
     }
 }
-
 function showTransactionPage() {
     updateBalance();
     displayTransactions();
@@ -173,7 +178,55 @@ function showTransactionPage() {
         transactionList.appendChild(li);
     }
     
+    // Adicione essas funções no seu script.js
+    function showLoginForm() {
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('signup-container').style.display = 'none';
+        document.getElementById('forgot-password-container').style.display = 'none';
+    }
 
+    function showSignupForm() {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('signup-container').style.display = 'block';
+        document.getElementById('forgot-password-container').style.display = 'none';
+    }
+
+    function showForgotPasswordForm() {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('signup-container').style.display = 'none';
+        document.getElementById('forgot-password-container').style.display = 'block';
+    }
+
+    function resetPassword() {
+        // Obtenha o valor do campo de entrada de e-mail
+        const userEmail = document.getElementById('email').value;
+
+        // Simule uma nova senha aleatória de 8 dígitos
+        const newPassword = generateRandomPassword();
+
+        // Simule o envio de um e-mail (substitua isso pelo código do lado do servidor)
+        sendEmail(userEmail, newPassword);
+    }
+
+    function sendEmail(email, password) {
+        // Simulação: exibir a senha gerada no console
+        console.log(`Senha gerada para ${email}: ${password}`);
+
+        // Atualize a interface do usuário com a mensagem de sucesso (substitua isso pelo código real)
+        const responseElement = document.getElementById('response');
+        responseElement.textContent = `E-mail enviado para ${email}. Verifique sua caixa de entrada.`;
+    }
+
+    function generateRandomPassword() {
+        // Gere uma senha aleatória de 8 dígitos
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let password = '';
+        for (let i = 0; i < 8; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            password += characters.charAt(randomIndex);
+        }
+        return password;
+    }
 
     function showTransactionPage() {
         updateBalance();
