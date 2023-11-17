@@ -29,6 +29,8 @@ function showLoginForm() {
     document.getElementById('signup-container').style.display = 'none';
 }
 function createAccount() {
+    console.log('Função createAccount() chamada.');
+
     const newEmail = document.getElementById('newEmail').value;
     const newPassword = document.getElementById('newPassword').value;
 
@@ -52,11 +54,22 @@ function createAccount() {
     currentUser = newAccount;
     saveData();
 
-    // Ocultar o formulário de cadastro e mostrar a mensagem de sucesso
+    // Ocultar o formulário de cadastro
     document.getElementById('signup-container').style.display = 'none';
-    document.getElementById('successMessage').style.display = 'block';
 
-    // Redirecionar para a página de transações
+    // Criar elemento para a mensagem de sucesso
+    const successMessageElement = document.createElement('div');
+    successMessageElement.id = 'successMessage';
+    successMessageElement.className = 'alert alert-success mt-3';
+    successMessageElement.textContent = 'Conta criada com sucesso!';
+
+    // Inserir a mensagem de sucesso após o formulário de cadastro
+    document.getElementById('app-container').appendChild(successMessageElement);
+
+    // Exibir o formulário de login
+    document.getElementById('login-container').style.display = 'block';
+
+
     showTransactionPage();
 }
 
@@ -197,36 +210,36 @@ function showTransactionPage() {
         document.getElementById('forgot-password-container').style.display = 'block';
     }
 
-    function resetPassword() {
-        // Obtenha o valor do campo de entrada de e-mail
-        const userEmail = document.getElementById('email').value;
+      function resetPassword() {
+            // Obtenha o valor do campo de entrada de e-mail
+            const userEmail = document.getElementById('email').value;
 
-        // Simule uma nova senha aleatória de 8 dígitos
-        const newPassword = generateRandomPassword();
+            // Simule uma nova senha aleatória de 8 dígitos
+            const newPassword = generateRandomPassword();
 
-        // Simule o envio de um e-mail (substitua isso pelo código do lado do servidor)
-        sendEmail(userEmail, newPassword);
-    }
-
-    function sendEmail(email, password) {
-        // Simulação: exibir a senha gerada no console
-        console.log(`Senha gerada para ${email}: ${password}`);
-
-        // Atualize a interface do usuário com a mensagem de sucesso (substitua isso pelo código real)
-        const responseElement = document.getElementById('response');
-        responseElement.textContent = `E-mail enviado para ${email}. Verifique sua caixa de entrada.`;
-    }
-
-    function generateRandomPassword() {
-        // Gere uma senha aleatória de 8 dígitos
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let password = '';
-        for (let i = 0; i < 8; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            password += characters.charAt(randomIndex);
+            // Simule o envio de um e-mail (substitua isso pelo código do lado do servidor)
+            sendEmail(userEmail, newPassword);
         }
-        return password;
-    }
+
+        function sendEmail(email, password) {
+            // Simulação: exibir a senha gerada no console
+            console.log(`Senha gerada para ${email}: ${password}`);
+
+            // Atualize a interface do usuário com a mensagem de sucesso (substitua isso pelo código real)
+            const responseElement = document.getElementById('response');
+            responseElement.textContent = `E-mail enviado para ${email}. Verifique sua caixa de entrada.`;
+        }
+
+        function generateRandomPassword() {
+            // Gere uma senha aleatória de 8 dígitos
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let password = '';
+            for (let i = 0; i < 8; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                password += characters.charAt(randomIndex);
+            }
+            return password;
+        }
 
     function showTransactionPage() {
         updateBalance();
