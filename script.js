@@ -43,6 +43,7 @@ function createAccount() {
         alert('Este endereço de e-mail já está em uso. Escolha outro.');
         return;
     }
+    
 
     const newAccount = {
         email: newEmail,
@@ -368,6 +369,7 @@ function displayTransactions() {
 }
 
 // Exemplo de contas e transações iniciais
-accounts.push({ username: 'user1', password: 'password1', transactions: [] });
-accounts.push({ username: 'user2', password: 'password2', transactions: [] });
+accounts.push({ email: 'user1@example.com', password: 'password1', transactions: [] });
+accounts.push({ email: 'user2@example.com', password: 'password2', transactions: [] });
+
 currentUser = accounts[0];
