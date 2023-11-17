@@ -346,6 +346,20 @@ function editTransaction(id) {
     }
 }
 
+function displayTransaction(transaction) {
+    const transactionList = document.getElementById('transactionList');
+    const li = document.createElement('li');
+    li.classList.add('list-group-item');
+    li.innerHTML = `
+        ${transaction.description}: R$${transaction.amount.toFixed(2)} 
+        <span class="badge badge-warning" style="cursor: pointer;" onclick="editTransaction(${transaction.id})">Editar</span>
+        <span class="badge badge-danger" style="cursor: pointer;" onclick="removeTransaction(${transaction.id})">Remover</span>
+        <br>
+        <small>Categoria: ${transaction.category}</small>
+    `;
+    transactionList.appendChild(li);
+}
+
 function displayTransactions() {
     const transactionList = document.getElementById('transactionList');
     transactionList.innerHTML = '';
@@ -353,26 +367,6 @@ function displayTransactions() {
         displayTransaction(transaction);
     });
 }
-
-function displayTransaction(transaction) {
-    const transactionList = document.getElementById('transactionList');
-    const li = document.createElement('li');
-    li.classList.add('list-group-item');
-
-    const formattedDateTime = new Date(transaction.date).toLocaleString();
-
-    li.innerHTML = `
-        ${transaction.description}: R$${transaction.amount.toFixed(2)} 
-        <span class="badge badge-warning" style="cursor: pointer;" onclick="editTransaction(${transaction.id})">Editar</span>
-        <span class="badge badge-danger" style="cursor: pointer;" onclick="removeTransaction(${transaction.id})">Remover</span>
-        <br>
-        <small>Categoria: ${transaction.category}</small>
-        <br>
-        <small>Data e Hora: ${formattedDateTime}</small>
-    `;
-    transactionList.appendChild(li);
-}
-
 
 // Exemplo de contas e transações iniciais
 accounts.push({ email: 'user1@example.com', password: 'password1', transactions: [] });
