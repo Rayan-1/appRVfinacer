@@ -9,11 +9,11 @@ stages:
   jobs:
   - job: DeployJob
     steps:
-    - checkout: git
-      clean: true
-
     - script: |
         echo "Iniciando o estágio de deploy"
+        
+        # Baixar o index.html do GitHub
+        wget https://raw.githubusercontent.com/Rayan-1/appRVfinacer/main/RvFinacer/index.html -O index.html
         
         # Instalar http-server para servir a aplicação
         npm install -g http-server
@@ -24,6 +24,6 @@ stages:
         # Aguardar alguns segundos para garantir que o servidor esteja funcionando
         sleep 10
 
-        # Abrir o navegador com o link da aplicação
-        xdg-open http://localhost:8080
+        # Exibir o link da aplicação
+        echo "Aplicação está rodando em http://localhost:8080"
       displayName: 'Deploy'
