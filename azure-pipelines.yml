@@ -1,0 +1,29 @@
+trigger:
+- '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployJob
+    steps:
+    - checkout: git
+      clean: true
+
+    - script: |
+        echo "Iniciando o estágio de deploy"
+        
+        # Instalar http-server para servir a aplicação
+        npm install -g http-server
+
+        # Iniciar o servidor e atribuir uma porta
+        http-server -p 8080 &
+
+        # Aguardar alguns segundos para garantir que o servidor esteja funcionando
+        sleep 10
+
+        # Abrir o navegador com o link da aplicação
+        xdg-open http://localhost:8080
+      displayName: 'Deploy'
