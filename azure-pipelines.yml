@@ -5,7 +5,30 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo "Iniciando o estágio de build"
+      displayName: 'Build'
+
+- stage: ApproveDeployment
+  jobs:
+  - job: ApprovalJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo "Aprovação necessária para o deploy"
+      displayName: 'Aprovação'
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Esperando pela aprovação..."
+          Start-Sleep -Seconds 60  # Você pode ajustar o tempo de espera conforme necessário
+
 - stage: DeployToNginx
+  dependsOn: ApproveDeployment
   jobs:
   - job: DeployToNginxJob
     steps:
@@ -18,11 +41,11 @@ stages:
         sudo apt-get update
         sudo apt-get install -y nginx
 
-        # Download do código do repositório (substitua 'sua-branch' pelo nome da sua branch)
+        # Download do código do repositório
         git checkout -b main
         git pull origin main
 
-        # Copiar o código para o diretório do Nginx (substitua 'RvFinacer' pelo caminho real)
+        # Copiar o código para o diretório do Nginx
         sudo cp -R RvFinacer/* /var/www/html/
 
         # Reiniciar o Nginx para aplicar as alterações
