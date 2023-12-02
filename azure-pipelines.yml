@@ -5,25 +5,29 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Deploy
+- stage: DeployToNginx
   jobs:
-  - job: DeployJob
+  - job: DeployToNginxJob
     steps:
+    - checkout: self
+
     - script: |
         echo "Iniciando o estágio de deploy"
         
-        # Baixar o index.html do GitHub
-        wget https://raw.githubusercontent.com/Rayan-1/appRVfinacer/main/RvFinacer/index.html -O index.html
-        
-        # Instalar http-server para servir a aplicação
-        npm install -g http-server
+        # Configuração do ambiente (instalação do Nginx, por exemplo)
+        sudo apt-get update
+        sudo apt-get install -y nginx
 
-        # Iniciar o servidor e atribuir uma porta
-        http-server -p 8080 &
+        # Download do código do repositório (substitua 'sua-branch' pelo nome da sua branch)
+        git checkout -b sua-branch
+        git pull origin sua-branch
 
-        # Aguardar alguns segundos para garantir que o servidor esteja funcionando
-        sleep 10
+        # Copiar o código para o diretório do Nginx (substitua 'RvFinacer' pelo caminho real)
+        sudo cp -R RvFinacer/* /var/www/html/
 
-        # Exibir o link da aplicação
-        echo "Aplicação está rodando em http://localhost:8080"
+        # Reiniciar o Nginx para aplicar as alterações
+        sudo service nginx restart
+
+        # Exibindo o link da aplicação
+        echo "Aplicação está rodando em http://localhost"
       displayName: 'Deploy'
