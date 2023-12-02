@@ -19,8 +19,8 @@ stages:
         sudo apt-get install -y nginx
 
         # Download do código do repositório (substitua 'sua-branch' pelo nome da sua branch)
-        git checkout -b sua-branch
-        git pull origin sua-branch
+        git checkout -b main
+        git pull origin main
 
         # Copiar o código para o diretório do Nginx (substitua 'RvFinacer' pelo caminho real)
         sudo cp -R RvFinacer/* /var/www/html/
